@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const FormSchema = new mongoose.Schema(
+const ObjectSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -34,4 +34,4 @@ const FormSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Form", FormSchema);
+module.exports = mongoose.model("Job", ObjectSchema);
