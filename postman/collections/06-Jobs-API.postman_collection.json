@@ -1,0 +1,264 @@
+{
+  "info": {
+    "_postman_id": "d425abeb-af5d-483a-97f7-1e464401b4a1",
+    "name": "06-Jobs-API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "id": "fcf648c1-77ca-44c4-9f3f-43b754c6fc28",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n   \"username\": \"Carl075\",\r\n   \"password\": \"secret\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/auth/register",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "41042482-d242-4887-ab96-bc3f4e971c3f",
+            "exec": [
+              "const jsonData = pm.response.json();\r",
+              "pm.globals.set(\"accessToken\", jsonData.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "93ca915f-e2a8-4e7d-8f6b-aaf457dbb245",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n   \"username\": \"Carl075\",\r\n   \"password\": \"secret\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/auth/login",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Form",
+      "id": "ed325d13-fc14-4e83-a3fd-09554d75cb7e",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTdhOWJiMGFhMDYzMDhlY2IyNDU5NzEiLCJ1c2VybmFtZSI6IkNhcmwwNzUiLCJpYXQiOjE3Njk4MTkxOTEsImV4cCI6MTc3MjQxMTE5MX0.qnfXvqJGd2-tsrNoVoVRA-CvBKtlyFQlsoCLgAJ2k2g",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"Carl075\",\r\n  \"password\": \"secret\",  \r\n  \"notes\": \"My name is Xavier.\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/form",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "form"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Forms",
+      "id": "ebc91db8-8ace-4bd6-8b41-a1ce93888f63",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTc3ZWE4NzEwOTRhZjA5YmM4MTYzN2MiLCJ1c2VybmFtZSI6IlhhdmllciIsImlhdCI6MTc2OTQ2NzAwMSwiZXhwIjoxNzcyMDU5MDAxfQ.f83DgxGixW9e_fVgpkyfpsgFEnzOTyDn7nxtF1VUvBc",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://zero6-jobs-api-di50.onrender.com",
+          "protocol": "https",
+          "host": [
+            "zero6-jobs-api-di50",
+            "onrender",
+            "com"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Form",
+      "id": "9a93f7da-c8ea-4eb3-a622-1f47357c9272",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"Xavier204\",\r\n    \"password\": \"DFTjnu$\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/form/697d5423f1ace0cda1928231",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "form",
+            "697d5423f1ace0cda1928231"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Form",
+      "id": "ce89ee99-6fc4-48a7-847f-8a09fc972781",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/form/697f8a66710ed9781e2e2f91",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "form",
+            "697f8a66710ed9781e2e2f91"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Form",
+      "id": "86a4416d-3c2f-40bd-bb4c-c29bf07b8d38",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}
