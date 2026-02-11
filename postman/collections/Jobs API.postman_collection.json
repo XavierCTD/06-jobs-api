@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Jobs API",
+		"description": "A comprehensive API for user authentication and form management. This API uses JWT-based authentication and provides CRUD operations for forms.\n\n## Authentication\nAll `/api/v1/form` endpoints require a valid JWT token in the Authorization header:\n```\nAuthorization: Bearer <token>\n```\n\n## Rate Limiting\n- 100 requests per 15 minutes per IP\n\n## Security Features\n- Helmet.js for HTTP headers security\n- CORS enabled\n- XSS protection\n- Rate limiting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"description": "Authentication endpoints for user registration and login. These endpoints do not require authentication.",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"johndoe\",\n    \"password\": \"secret123\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account.\n\n**Request Body:**\n- `username` (string, required): Username (1-50 characters)\n- `password` (string, required): Password (minimum 4 characters)\n\n**Response:**\n- `201 Created`: Returns user object with name and JWT token\n- `400 Bad Request`: Validation errors (missing fields, invalid format)\n- `409 Conflict`: Username already exists"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"johndoe\",\n    \"password\": \"secret123\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate an existing user and receive a JWT token.\n\n**Request Body:**\n- `username` (string, required): User's username\n- `password` (string, required): User's password\n\n**Response:**\n- `200 OK`: Returns user object with name and JWT token\n- `400 Bad Request`: Missing username or password\n- `401 Unauthorized`: Invalid credentials"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forms",
+			"description": "Form management endpoints. All endpoints in this folder require JWT authentication via Bearer token in the Authorization header.",
+			"item": [
+				{
+					"name": "Get All Forms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"description": "JWT token obtained from login/register"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/form",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form"
+							]
+						},
+						"description": "Retrieve all forms created by the authenticated user, sorted by creation date.\n\n**Authentication:** Required (Bearer token)\n\n**Response:**\n- `200 OK`: Returns array of form objects and count\n- `401 Unauthorized`: Invalid or missing token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Form",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"description": "JWT token obtained from login/register"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/form/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "MongoDB ObjectId of the form"
+								}
+							]
+						},
+						"description": "Retrieve a specific form by ID. Only returns forms owned by the authenticated user.\n\n**Authentication:** Required (Bearer token)\n\n**Path Parameters:**\n- `id` (string, required): MongoDB ObjectId of the form\n\n**Response:**\n- `200 OK`: Returns the form object\n- `401 Unauthorized`: Invalid or missing token\n- `404 Not Found`: Form not found or not owned by user"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Form",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"description": "JWT token obtained from login/register"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"formuser\",\n    \"password\": \"formpassword\",\n    \"status\": \"pending\",\n    \"notes\": \"Optional notes about this form\",\n    \"role\": \"user\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/form",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form"
+							]
+						},
+						"description": "Create a new form. The form will be automatically associated with the authenticated user.\n\n**Authentication:** Required (Bearer token)\n\n**Request Body:**\n- `username` (string, required): Form username (max 100 characters)\n- `password` (string, required): Form password\n- `status` (string, optional): Form status - one of: \"pending\", \"approved\", \"declined\" (default: \"pending\")\n- `notes` (string, optional): Additional notes (max 500 characters)\n- `role` (string, optional): User role - one of: \"admin\", \"user\" (default: \"user\")\n\n**Response:**\n- `201 Created`: Returns the created form object\n- `400 Bad Request`: Validation errors\n- `401 Unauthorized`: Invalid or missing token"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Form",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"description": "JWT token obtained from login/register"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"updateduser\",\n    \"password\": \"updatedpassword\",\n    \"status\": \"approved\",\n    \"notes\": \"Updated notes\",\n    \"role\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/form/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "MongoDB ObjectId of the form to update"
+								}
+							]
+						},
+						"description": "Update an existing form. Only forms owned by the authenticated user can be updated.\n\n**Authentication:** Required (Bearer token)\n\n**Path Parameters:**\n- `id` (string, required): MongoDB ObjectId of the form\n\n**Request Body (all fields optional):**\n- `username` (string): Form username (cannot be empty string)\n- `password` (string): Form password (cannot be empty string)\n- `status` (string): Form status - one of: \"pending\", \"approved\", \"declined\"\n- `notes` (string): Additional notes (max 500 characters)\n- `role` (string): User role - one of: \"admin\", \"user\"\n\n**Response:**\n- `200 OK`: Returns the updated form object\n- `400 Bad Request`: Username or password cannot be empty\n- `401 Unauthorized`: Invalid or missing token\n- `404 Not Found`: Form not found or not owned by user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Form",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"description": "JWT token obtained from login/register"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/form/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"form",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "MongoDB ObjectId of the form to delete"
+								}
+							]
+						},
+						"description": "Delete a form by ID. Only forms owned by the authenticated user can be deleted.\n\n**Authentication:** Required (Bearer token)\n\n**Path Parameters:**\n- `id` (string, required): MongoDB ObjectId of the form\n\n**Response:**\n- `200 OK`: Returns success message\n- `401 Unauthorized`: Invalid or missing token\n- `404 Not Found`: Form not found or not owned by user"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
