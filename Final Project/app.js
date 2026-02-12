@@ -39,6 +39,7 @@ app.use(
 
 // routes
 
+app.use(express.static("public"));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/form", authenticateUser, formsRouter);
 
