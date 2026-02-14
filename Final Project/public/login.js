@@ -11,10 +11,12 @@ import { showForms } from "./forms.js";
 
 let loginDiv = null;
 let password = null;
+let username = null;
 
 export const handleLogin = () => {
   loginDiv = document.getElementById("login-div");
   password = document.getElementById("password");
+  username = document.getElementById("username");
   const loginButton = document.getElementById("login-button");
   const loginCancel = document.getElementById("login-cancel");
 
