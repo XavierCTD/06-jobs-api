@@ -4,7 +4,7 @@ const FormSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please provide name"],
+      required: [true, "Please provide username"],
       maxlength: 100,
     },
     password: {
@@ -16,14 +16,18 @@ const FormSchema = new mongoose.Schema(
       enum: ["pending", "approved", "declined"],
       default: "pending",
     },
+    name: {
+      type: String,
+      maxlength: 250,
+    },
     notes: {
       type: String,
       maxlength: 500,
     },
-    role: {
+    likes: {
       type: String,
-      enum: ["admin", "user"],
-      default: "user",
+      enum: ["entertainment", "sports", "games", "art", "music", "none"],
+      default: "none",
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

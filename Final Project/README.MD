@@ -14,19 +14,11 @@ npm install && npm start
 #### Routers
 
 - auth.js
-- jobs.js
-
-#### User Model
-
-Email Validation Regex
-
-```regex
-/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-```
+- form.js
 
 #### Register User
 
-- Validate - name, email, password - with Mongoose
+- Validate - name, password - with Mongoose
 - Hash Password (with bcryptjs)
 - Save User
 - Generate Token
@@ -34,8 +26,8 @@ Email Validation Regex
 
 #### Login User
 
-- Validate - email, password - in controller
-- If email or password is missing, throw BadRequestError
+- Validate - password - in controller
+- If password is missing, throw BadRequestError
 - Find User
 - Compare Passwords
 - If no user or password does not match, throw UnauthenticatedError
@@ -45,7 +37,6 @@ Email Validation Regex
 #### Mongoose Errors
 
 - Validation Errors
-- Duplicate (Email)
 - Cast Error
 
 #### Security
